@@ -47,6 +47,11 @@ http.createServer(function (req, res) {
 
 
 
+
+
+
+
+
 	/** 
 	 * node url模块获取url传参
 	 * url.parse(req.url, true).query 参数保存为JSON格式
