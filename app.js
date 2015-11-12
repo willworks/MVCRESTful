@@ -22,17 +22,14 @@ http.createServer(function (req, res) {
 	 * params.id 操作的具体资源
 	 */
 	var params = parser.parser(req);
-
-	console.log(params);
-
 	if (req.url === '/favicon.ico'){
+		// 过滤多余的请求
 		return;
 	}else{
 		if (params.method === 'GET' || params.method === 'POST' || params.method === 'PUT' || params.method === 'DELETE') {
 			// router处理请求，返回结果
 			res.writeHead(200, {'Content-Type': 'text/plain'});
 			router.router(params, res, function(result){ 
-				// result 为多级回调的结果
 				res.end(result); 
 			}); 
 		}else{
