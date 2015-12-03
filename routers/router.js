@@ -1,15 +1,29 @@
-function router(params, res, callback){ 
-	var req = params;
-	var method = params.method.toLowerCase();
-	// 模型定义
-	// var module = require( '../controllers/controller');
-	// var controller = new module.controller();
-	callback(method);
-	// controller(params.method, params.id, params.action, function(result){
-	// 	console.log('router ' + params.id);
+// 控制器
+var controller = require( '../controllers/controller');
 
-	// 	var stringfyResult = JSON.stringify(result);
-	// 	callback(stringfyResult);
-	// });
-}
-exports.router = router;
+exports.router = function(req, res, callback){ 
+	var method = req.method.toUpperCase();
+
+	/*
+	// 调通测试代码
+	controller.listAll(req, res, callback);
+	*/
+	
+	// 过滤多余的请求
+	if (req.action === 'favicon.ico') {
+		return;
+	} else {
+		switch (method) {
+			case 'GET'    : controller.listUser(req, res, callback); 
+							break;
+			case 'POST'   : controller.addUSer(req, res, callback);
+							break;
+			case 'PUT'    : controller.updateUser(req, res, callback); 
+							break;
+			case 'DELETE' : controller.deleteUser(req, res, callback); 
+							break;
+			default       : controller.errQeq(req, res, callback); 
+							break;
+		}
+	}
+};
