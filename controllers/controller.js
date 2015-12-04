@@ -18,37 +18,48 @@ exports.test = function(req, res, callback){
 	console.log(req.id);
 };
 */
-/*过滤非RESTful请求
- * 1.判断方法跟请求是否一致
- * 2.判断操作跟请求是否一致
- * 3.判断操作的具体资源是否存在
-*/
-function filter(method) {
 
-}
 // http://host/listUser
 // http://host/listUser/id
-exports.listUser = function(req, res, callback){
+exports.listUser = function(req, callback){
 	/*
 	// 调通测试代码
 	model.test(req.action, callback);
 	*/
-	if (req.id === undefined) {
-		
+	if(req.action === 'listUser') {
+		model.read(req, callback);
 	} else {
-		callback('具体用户');
+		callback('Request URL is not in RESTful style!');
 	}
 };
 
-// http://host/addUSer
-exports.addUSer = function(req, res, callback){};
+// http://host/addUser
+exports.addUser = function(req, callback){
+	if(req.action === 'addUser') {
+		model.create(req, callback);
+	} else {
+		callback('Request URL is not in RESTful style!');
+	}
+};
 
 // http://host/updateUser/id
-exports.updateUser = function(req, res, callback){};
+exports.updateUser = function(req, callback){
+	if(req.action === 'updateUser') {
+		model.update(req, callback);
+	} else {
+		callback('Request URL is not in RESTful style!');
+	}
+};
 
-// http://host/updateUser/id
-exports.deleteUser = function(req, res, callback){};
+// http://host/deleteUser/id
+exports.deleteUser = function(req, callback){
+	if(req.action === 'deleteUser') {
+		model.delete(req, callback);
+	} else {
+		callback('Request URL is not in RESTful style!');
+	}
+};
 
-exports.errQeq = function(req, res, callback){
+exports.errQeq = function(req, callback){
 	callback('Request URL is not in RESTful style!');
 };

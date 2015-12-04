@@ -29,14 +29,21 @@ function dao(req, res, callback){
 }
 
 // CURD
-exports.c = function(req, res, callback){};
+exports.create = function(req, callback){
+	callback('1231');
+};
 
-exports.u = function(req, res, callback){};
+exports.update = function(req, callback){};
 
-exports.r = function(req, res, callback){};
+exports.read = function(req, callback){
+	callback('1231');
+};
 
-exports.d = function(req, res, callback){};
+exports.delete = function(req, callback){};
 
+/*
+// 调通测试代码
 exports.test = function(action, callback){
 	callback(action);
 };
+*/

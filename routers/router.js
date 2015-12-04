@@ -8,21 +8,21 @@ exports.router = function(req, res, callback){
 	// 调通测试代码
 	controller.listAll(req, res, callback);
 	*/
-	
-	// 过滤多余的请求
+
+	// 过滤RESTful之外的http动词
 	if (req.action === 'favicon.ico') {
 		return;
 	} else {
 		switch (method) {
-			case 'GET'    : controller.listUser(req, res, callback); 
+			case 'GET'    : controller.listUser(req, callback); 
 							break;
-			case 'POST'   : controller.addUSer(req, res, callback);
+			case 'POST'   : controller.addUser(req, callback);
 							break;
-			case 'PUT'    : controller.updateUser(req, res, callback); 
+			case 'PUT'    : controller.updateUser(req, callback); 
 							break;
-			case 'DELETE' : controller.deleteUser(req, res, callback); 
+			case 'DELETE' : controller.deleteUser(req, callback); 
 							break;
-			default       : controller.errQeq(req, res, callback); 
+			default       : controller.errQeq(req, callback); 
 							break;
 		}
 	}
