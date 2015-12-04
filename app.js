@@ -14,18 +14,26 @@ var parser = require('./parser'),
 	router = require('./routers/router');
 
 http.createServer(function (req, res) {
-	req = parser.parser(req);
-	/**
-	 * req 用于存储parser切割好的数据，传递给其他层次使用
-	 * req.method 请求方式
-	 * req.path 请求路径
-	 * req.action 动作
-	 * req.id 操作的具体资源
-	 */
-	// 全部路由入口
-	router.router(req, res, function(result){ 
-		res.end(result); 
-	}); 
+	var params = '';
+    req.addListener('data', function(chunk){  
+        params += chunk;  
+    })  
+    .addListener('end', function(){	  
+    	req = parser.parser(req);
+    	req.data = params;
+    	/**
+    	 * req 用于存储parser切割好的数据，传递给其他层次使用
+    	 * req.method 请求方式
+    	 * req.path 请求路径
+    	 * req.action 动作
+    	 * req.id 操作的具体资源
+    	 * req.data http传递的数据
+    	 */
+    	// 全部路由入口
+    	router.router(req, res, function(result){ 
+    		res.end(result); 
+    	}); 
+    });
 
 }).listen(8080); 
 

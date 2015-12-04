@@ -5,6 +5,7 @@ var model = require('../models/model');
  * req.path 请求路径
  * req.action 动作
  * req.id 操作的具体资源
+ * req.data http传递的数据
  */
 
 /*
@@ -13,9 +14,11 @@ exports.test = function(req, res, callback){
 	callback(req.method);
 	callback(req.action);
 	callback(req.id);
+	callback(req.data);
 	console.log(req.method);
 	console.log(req.action);
 	console.log(req.id);
+	console.log(req.data);
 };
 */
 
@@ -30,51 +33,57 @@ exports.listUser = function(req, callback){
 		model.read(req.id, callback);
 	} else {
 		callback('Request URL is not in RESTful style!');
+		console.log('\nRequest URL is not in RESTful style!');
 	}
 };
 
 // http://host/addUser
 exports.addUser = function(req, callback){
 	if(req.action === 'addUser') {
-		var params;
-	    req.addListener('data', function(chunk){  
-	        params += chunk;  
-	    })  
-	    .addListener('end', function(){	  
-	    	callback(params);  
-	    	// model.create(params, callback);
-	    });
+		if (req.id === undefined || req.id === undefined) {
+			model.create(req.data, callback);
+		} else {
+			callback('Request URL is not in RESTful style!');
+			console.log('\nRequest URL is not in RESTful style!');
+		}
+		
 	} else {
 		callback('Request URL is not in RESTful style!');
+		console.log('\nRequest URL is not in RESTful style!');
 	}
 };
 
 // http://host/updateUser/id
 exports.updateUser = function(req, callback){
 	if(req.action === 'updateUser') {
-		if(req.id === '') {
+		if(req.id === '' || req.id === undefined) {
 			callback('Request URL is not in RESTful style!');
+			console.log('\nRequest URL is not in RESTful style!');
 		} else {
-			model.update(req.id, callback);
+			model.update(req.id, req.data, callback);
 		}
 	} else {
 		callback('Request URL is not in RESTful style!');
+		console.log('\nRequest URL is not in RESTful style!');
 	}
 };
 
 // http://host/deleteUser/id
 exports.deleteUser = function(req, callback){
 	if(req.action === 'deleteUser') {
-		if(req.id === '') {
+		if(req.id === '' || req.id === undefined) {
 			callback('Request URL is not in RESTful style!');
+			console.log('\nRequest URL is not in RESTful style!');
 		} else {
 			model.delete(req.id, callback);
 		}
 	} else {
 		callback('Request URL is not in RESTful style!');
+		console.log('\nRequest URL is not in RESTful style!');
 	}
 };
 
 exports.errQeq = function(req, callback){
 	callback('Request URL is not in RESTful style!');
+	console.log('\nRequest URL is not in RESTful style!');
 };

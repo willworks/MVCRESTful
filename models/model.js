@@ -1,41 +1,45 @@
 ﻿var fs = require('fs');
-
-function add(id, params, callback){
-	// 获取POST传递的参数 通过addListener来实现
-    req.addListener('data', function(chunk){  
-        paramsPost += chunk;  
-    })  
-    .addListener('end', function(){	    
-    	fs.readFile( __dirname + "/" + "data/users.json", 'utf8', function (err, data) {
-    		/** 
-    		 * 处理POST的传值
-			 * 测试传值：name=mohit&password=password4&profession=teacher&id=4
-			 */
-			paramsPost = querystring.parse(paramsPost);
-			// JSON解析
-    		data = JSON.parse(data);
-    		// 存储
-    		data['user4'] = paramsPost;
-            console.log(req.resource.method + ' store user4' + JSON.stringify(paramsPost) + ' succefully!');
-            // 返回
-         	res.writeHead(200, {'Content-Type': 'text/plain'}); 
-         	data = JSON.stringify(data);
-        	callback(data);
-    	});
-    });
-}
-
+var querystring = require('querystring');
 
 // CURD
-exports.create = function(info, callback){
-
+exports.create = function(info, callback) {
+	info = querystring.parse(info);
+	fs.readFile( __dirname + "/" + "../data/users.json", 'utf8', function (err, data) {
+    	var item = 'user' + info.id;
+    	data = JSON.parse(data);
+    	if (data[item] !== undefined) {
+    		console.log('Item is already existed!');
+    		callback('Item is already existed!');
+    	} else {
+    		data[item] = info;
+    		console.log('\nADD' + ' ' +item + '\n' + data);
+    		// 添加需要在控制台查看，查看XHR请求返回的结果
+    		callback('\nADD' + ' ' +item + '\n' + JSON.stringify(data));
+    	}
+	});
 };
 
-exports.update = function(id, info, callback){};
+exports.update = function(id, info, callback) {
+	info = querystring.parse(info);
+	fs.readFile( __dirname + "/" + "../data/users.json", 'utf8', function (err, data) {
+    	var item = 'user' + id;
+    	data = JSON.parse(data);
+    	if (data[item] === undefined) {
+    		console.log('Item is not found!');
+    		callback('Item is not found!');
+    	} else {
+    		data[item] = info;
+    		console.log('\nUPDATE' + ' ' +item + '\n' + data);
+    		// 添加需要在控制台查看，查看XHR请求返回的结果
+    		callback('\nUPDATE' + ' ' +item + '\n' + JSON.stringify(data));
+    	}
+	});
+};
 
-exports.read = function(id, callback){
+exports.read = function(id, callback) {
 	if(id === '' || id === undefined) {
     	fs.readFile( __dirname + "/" + "../data/users.json", 'utf8', function (err, data) {
+        	console.log('\nGET all items' + '\n' + data);
         	callback(data);
     	});
 	} else {
@@ -46,21 +50,27 @@ exports.read = function(id, callback){
 	    		callback('Item is not found!');
 	    	} else {
 	    		var res = 'id:' + data[item].id + '\n' + 'name:' + data[item].name + '\n' + 'password:' + data[item].password + '\n' + 'profession:' + data[item].profession;
+	    		console.log('\nGET' + ' ' +item + '\n' + res);
 	    		callback(res);
 	    	}
 		});
 	}
 };
 
-exports.delete = function(id, callback){
-	if(id === '') {
-        callback('Item is not found!');
-	} else {
-		fs.readFile( __dirname + "/" + "../data/users.json", 'utf8', function (err, data) {
-	     	data = data.toString();
-	    	callback(data);
-		});
-	}
+exports.delete = function(id, callback) {
+	fs.readFile( __dirname + "/" + "../data/users.json", 'utf8', function (err, data) {
+    	var item = 'user' + id;
+    	data = JSON.parse(data);
+    	if (data[item] === undefined) {
+    		console.log('Item is not found!');
+    		callback('Item is not found!');
+    	} else {
+    		delete data[item];
+    		console.log('\nDELETE' + ' ' +item + '\n' + data);
+    		// 删除需要在控制台查看，查看XHR请求返回的结果
+    		callback('\nDELETE' + ' ' +item + '\n' + JSON.stringify(data));
+    	}
+	});
 };
 
 /*
