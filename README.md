@@ -22,8 +22,8 @@ A RESTful web system build with node
 
 		 * PUT请求
 		 	var xmlhttp = new XMLHttpRequest();
-		 	var user = 'name=mohit&password=password4&profession=teacher&id=4';
-		 	xmlhttp.open('PUT','http://localhost:8080/updateUser/4',true);
+		 	var user = 'name=mohit&password=password4&profession=teacher&id=1';
+		 	xmlhttp.open('PUT','http://localhost:8080/updateUser/1',true);
 		 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		 	xmlhttp.send(user);
 
@@ -58,11 +58,11 @@ A RESTful web system build with node
 			// 这里用pathname.split('/')来实现切割各个参数
 			pathname = pathname.split('/');
 
-			//获取GET/PUT/DELETE url传递的参数 通过来获取params.XXX
+			//获取GET/DELETE url传递的参数 通过来获取params.XXX
 			var params = url.parse(req.url).query; 
 				params = querystring.parse(params);
 
-			//获取POST传递的参数 通过addListener来实现
+			//获取POST/PUT传递的参数 通过addListener来实现
 			var paramsPost ='';  
 		    req.addListener('data', function(chunk){  
 		        paramsPost += chunk;  
@@ -121,7 +121,7 @@ A RESTful web system build with node
 			<td>updateUser/id</td>
 			<td>PUT</td>
 			<td>JSON 字符串</td>
-			<td>添加新用户</td> 
+			<td>更新用户</td> 
 		</tr>
 
 
