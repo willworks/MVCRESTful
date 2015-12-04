@@ -23,7 +23,7 @@ A RESTful web system build with node
 		 * PUT请求
 		 	var xmlhttp = new XMLHttpRequest();
 		 	var user = 'name=mohit&password=password4&profession=teacher&id=4';
-		 	xmlhttp.open('PUT','http://localhost:8080/addUser/4',true);
+		 	xmlhttp.open('PUT','http://localhost:8080/updateUser/4',true);
 		 	xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
 		 	xmlhttp.send(user);
 
@@ -118,7 +118,7 @@ A RESTful web system build with node
 
 		<tr>
 			<td>4</td>
-			<td>addUser/id</td>
+			<td>updateUser/id</td>
 			<td>PUT</td>
 			<td>JSON 字符串</td>
 			<td>添加新用户</td> 
