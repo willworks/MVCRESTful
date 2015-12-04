@@ -27,7 +27,7 @@ exports.listUser = function(req, callback){
 	model.test(req.action, callback);
 	*/
 	if(req.action === 'listUser') {
-		model.read(req, callback);
+		model.read(req.id, callback);
 	} else {
 		callback('Request URL is not in RESTful style!');
 	}
@@ -36,7 +36,14 @@ exports.listUser = function(req, callback){
 // http://host/addUser
 exports.addUser = function(req, callback){
 	if(req.action === 'addUser') {
-		model.create(req, callback);
+		var params;
+	    req.addListener('data', function(chunk){  
+	        params += chunk;  
+	    })  
+	    .addListener('end', function(){	  
+	    	callback(params);  
+	    	// model.create(params, callback);
+	    });
 	} else {
 		callback('Request URL is not in RESTful style!');
 	}
@@ -45,7 +52,11 @@ exports.addUser = function(req, callback){
 // http://host/updateUser/id
 exports.updateUser = function(req, callback){
 	if(req.action === 'updateUser') {
-		model.update(req, callback);
+		if(req.id === '') {
+			callback('Request URL is not in RESTful style!');
+		} else {
+			model.update(req.id, callback);
+		}
 	} else {
 		callback('Request URL is not in RESTful style!');
 	}
@@ -54,7 +65,11 @@ exports.updateUser = function(req, callback){
 // http://host/deleteUser/id
 exports.deleteUser = function(req, callback){
 	if(req.action === 'deleteUser') {
-		model.delete(req, callback);
+		if(req.id === '') {
+			callback('Request URL is not in RESTful style!');
+		} else {
+			model.delete(req.id, callback);
+		}
 	} else {
 		callback('Request URL is not in RESTful style!');
 	}
